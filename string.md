@@ -11,12 +11,12 @@ Determine whether N satisfies all of the following conditions.
 • Among the digits of N, the digit 2 appears exactly twice.
 • Among the digits of N, the digit 3 appears exactly three times.
 
-Sample Input 1
-```copy
+####Sample Input 1
+
 123233
 
 Sample Output 1
-```Copy
+
 Yes
 
 
