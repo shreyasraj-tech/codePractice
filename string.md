@@ -28,16 +28,16 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String N = scanner.next();
 
-        int count1 = 0, count2 = 0, count3 = 0;
+        int c1 = 0, c2 = 0, c3 = 0;
 
         for (int i = 0; i < N.length(); i++) {
             char c = N.charAt(i);
-            if (c == '1') count1++;
-            if (c == '2') count2++;
-            if (c == '3') count3++;
+            if (c == '1') c1++;
+            if (c == '2') c2++;
+            if (c == '3') c3++;
         }
 
-        if (count1 == 1 && count2 == 2 && count3 == 3) {
+        if (c1 == 1 && c2 == 2 && c3 == 3) {
             System.out.println("Yes");
         } else {
             System.out.println("No");
