@@ -5,18 +5,24 @@ Here is the link to the problem on LeetCode 242:
 ## Given two strings s and t, return true if t is anagram of s, and false otherwise.
 
 
-Example 1:
+#### Example 1:
 
-Input: s = "anagram", t = "nagaram"
+- Input: s = "anagram", 
+- t = "nagaram"
+- ##### Output: true
 
-Output: true
 
-Example 2:
 
-Input: s = "rat", t = "car"
+#### Example 2:
 
+- Input: s = "rat", 
+- t = "car"
+##### Output: false
+
+
+
+Java 
 `````Java
-
 public class Main {
     public static void main(String[] args) {
         String s = "anagram";
