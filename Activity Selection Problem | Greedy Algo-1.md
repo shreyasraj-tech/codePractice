@@ -2,7 +2,7 @@
 
 ##
 Here is the link to the problem on Activity Selection Problem from gfg:
-[Activity Selection Problem | Greedy Algo-1]([https://leetcode.com/problems/product-of-array-except-self/description/](https://www.geeksforgeeks.org/problems/activity-selection-1587115620/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card))
+[Activity Selection Problem | Greedy Algo-1](https://leetcode.com/problems/product-of-array-except-self/description/](https://www.geeksforgeeks.org/problems/activity-selection-1587115620/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card))
 
 ```java
 import java.util.*;
