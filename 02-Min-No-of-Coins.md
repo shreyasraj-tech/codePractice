@@ -1,4 +1,4 @@
-## Minimum number of Coins
+## Minimum number of Coins - Greedy
 
 Here is the link to the problem on GEEKS FOR GEEKS: [Minimum number of Coins](https://www.geeksforgeeks.org/problems/-minimum-number-of-coins4426/1)
 
