@@ -1,6 +1,7 @@
-// User function Template for Java
 
-`java
+
+```java
+
 class Solution {
     public int longestCommonSubstr(String s1, String s2) {
          
