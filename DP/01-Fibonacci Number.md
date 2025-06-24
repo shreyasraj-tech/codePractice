@@ -11,71 +11,98 @@ F(1) = 1,
 F(n) = F(n-1) + F(n-2), for n > 1
 ```
 
-## Errors Found in User Code
+## 🧠 1. Memoization (Top-Down)
 
-### ❌ Problem 1: Incorrect return in `fib()` method
+### 🔷 Concept:
 
-* **Original Code:**
+* Solve the problem **recursively**.
+* **Store** results of subproblems in a **cache** (like an array or HashMap).
+* Avoids repeated calculations by **checking the cache first**.
 
-  ```java
-  public int fib(int n) {
-      int[] dp = new int[n+1];
-      Arrays.fill(dp,-1);
-      System.out.println(f(n,dp));
-  }
-  ```
-* **Issue:** The method return type is `int`, but it uses `System.out.println(...)` instead of `return`.
-* **Fix:** Replace `System.out.println(f(n, dp));` with `return f(n, dp);`
+### ✅ Characteristics:
 
-### ❌ Problem 2: `ArrayIndexOutOfBoundsException` when `n == 0`
+* **Recursive approach**
+* Uses **call stack** (top-down)
+* Caches results for reuse
+* More intuitive if you start from recursion
 
-* **Original Error:** Accessing `dp[1]` when `n == 0` leads to out-of-bounds.
-* **Fix:** Add a condition to return `0` directly when `n == 0`:
-
-  ```java
-  if (n == 0) return 0;
-  ```
-
----
-
-## Final Corrected Java Code (Top-Down Memoization)
+### 📦 Code (Recursive with Memoization):
 
 ```java
-import java.util.Arrays;
+int[] dp = new int[n + 1];
+Arrays.fill(dp, -1);
 
-class Solution {
-    static int f(int n, int[] dp) {
-        if (n <= 1) return n;
-        if (dp[n] != -1) return dp[n];
-        return dp[n] = f(n - 1, dp) + f(n - 2, dp);
-    }
-
-    public int fib(int n) {
-        if (n == 0) return 0;
-        int[] dp = new int[n + 1];
-        Arrays.fill(dp, -1);
-        return f(n, dp);
-    }
+int fib(int n) {
+    if (n <= 1) return n;
+    if (dp[n] != -1) return dp[n];
+    return dp[n] = fib(n - 1) + fib(n - 2);
 }
 ```
 
+### 📈 Time Complexity:
+
+* `O(n)` – each value is calculated once
+
+### 🧮 Space Complexity:
+
+* `O(n)` for `dp[]`
+* `O(n)` call stack due to recursion
+
 ---
 
-## What is This Approach?
+## 📊 2. Tabulation (Bottom-Up)
 
-### ✅ **Dynamic Programming - Memoization (Top-Down)**
+### 🔷 Concept:
 
-* **Memoization** is a technique in Dynamic Programming where we store the results of expensive function calls and reuse them when the same inputs occur again.
-* This prevents redundant calculations and improves performance from exponential to linear time.
+* Build the solution **iteratively from the base cases**.
+* Start from `0`, `1`, and build up to `n`.
+* Completely **avoids recursion**.
 
-### 🔍 Steps in Memoization:
+### ✅ Characteristics:
 
-1. Define a recursive function for the problem.
-2. Store already computed values in a cache (array or hashmap).
-3. Before computing a new value, check the cache.
-4. Use stored value if available, else compute and store it.
+* **Iterative approach**
+* Fills up a table from **bottom to top**
+* No stack overflow risk
+* Often faster in practice (no recursion overhead)
 
-### 🧠 Time and Space Complexity:
+### 📦 Code (Iterative with Tabulation):
 
-* **Time Complexity:** O(n) — Each Fibonacci number is calculated once.
-* **Space Complexity:** O(n) — For the `dp` array and recursion stack.
+```java
+int fib(int n) {
+    if (n == 0) return 0;
+    int[] dp = new int[n + 1];
+    dp[0] = 0;
+    dp[1] = 1;
+
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    return dp[n];
+}
+```
+
+### 📈 Time Complexity:
+
+* `O(n)`
+
+### 🧮 Space Complexity:
+
+* `O(n)` for `dp[]` (can be optimized to `O(1)`)
+
+---
+
+## 🔄 Summary Comparison
+
+| Feature              | Memoization (Top-Down)      | Tabulation (Bottom-Up)    |
+| -------------------- | --------------------------- | ------------------------- |
+| Approach             | Recursive                   | Iterative                 |
+| Stack Usage          | Yes (can overflow)          | No                        |
+| Caching              | Yes                         | Yes                       |
+| Easier for Beginners | Yes (if used to recursion)  | Slightly harder initially |
+| Optimization         | Difficult to optimize space | Can be optimized to O(1)  |
+
+---
+
+Do you want me to **add these notes to canvas** or show a **space-optimized version** of tabulation?
+
