@@ -195,6 +195,40 @@ prev = temp;
 
 * means: *best points achievable* with no restriction on previous-day’s task on the last day
 
+
+```java
+
+class Solution {
+    public int maximumPoints(int arr[][]) {
+       int n = arr.length;
+       int[] prev = new int[4];
+       Arrays.fill(prev,-1);
+       
+       prev[0] = Math.max(arr[0][1],arr[0][2]);
+       prev[1] = Math.max(arr[0][0],arr[0][2]);
+       prev[2] = Math.max(arr[0][0],arr[0][1]);
+       prev[3] = Math.max(arr[0][0],Math.max(arr[0][1],arr[0][2]));
+       
+       for(int day = 1;day<n;day++){
+           int[] temp= new int[4];
+           for(int last = 0;last<4;last++){
+               temp[last] =0;
+               
+               for(int t = 0;t<3;t++){
+               if(t!=last){
+                //   int point= ;
+                    temp[last] = Math.max(temp[last] , arr[day][t] + prev[t]);
+                    }
+               }
+           }
+           prev=temp;
+       }
+       return prev[3];
+        
+    }
+}
+
+```
 ---
 
 # 🟢 **Summary of features**
