@@ -1,8 +1,8 @@
----
+
 ✅ **Problem Name:** Max Sum without Adjacent
 ✅ **Link:** [GeeksforGeeks problem link](https://www.geeksforgeeks.org/problems/geeks-training/1)
-# 📝 Geeks Training Problem — Notes & Approach
-
+📝 Geeks Training Problem — Notes & Approach
+---
 
 ## 📌 **Problem Understanding**
 
@@ -86,6 +86,43 @@
    where `3` represents “no activity” the day before the first day.
 
 ---
+
+
+Final Code 
+```java
+// User function Template for Java
+
+class Solution {
+    static int maxi(int day,int last, int arr[][], int[][] dp){
+        if (dp[day][last] != -1) return dp[day][last];
+        if(day==0){
+            int maX=0;
+            for(int t=0;t<3; t++){
+                if(t!= last){
+                    maX= Math.max(maX, arr[0][t]);
+                }
+            }
+            return maX;
+        }
+        int maX=0;
+        for(int t=0;t<3; t++){
+            if(t!= last){
+                int point= arr[day][t] +maxi(day-1,t,arr,dp);
+                maX = Math.max(maX,point);
+            }
+        }
+        return dp[day][last]=maX;
+    }
+    public int maximumPoints(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int[][] dp=new int[arr.length][4];
+        for(int[] row:dp)Arrays.fill(row,-1);
+        return maxi(n-1,3, arr,dp );
+    }
+}
+```
+
 
 ## ⚙️ **Complexity**
 
