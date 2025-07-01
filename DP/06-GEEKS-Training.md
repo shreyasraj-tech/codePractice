@@ -1,7 +1,8 @@
 
 ✅ **Problem Name:** Max Sum without Adjacent
 ✅ **Link:** [GeeksforGeeks problem link](https://www.geeksforgeeks.org/problems/geeks-training/1)
-📝 Geeks Training Problem — Notes & Approach
+
+📝  *Geeks Training Problem — Notes & Approach*
 ---
 
 ## 📌 **Problem Understanding**
