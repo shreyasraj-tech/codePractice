@@ -136,6 +136,82 @@ class Solution {
 
 ---
 
+# 🟢 **Tabulation Explanation (Iterative DP)**
+
+* We build up the solution **bottom-up**, tracking the best possible points on each day, **for every possible previous-task state**.
+* There are 4 possibilities for `last`:
+
+  * `0, 1, 2` = previous day you did task 0, 1, or 2
+  * `3` = *no task restriction* (starting condition)
+* So we maintain `dp[last]` for each `last`, to remember the best achievable score when the previous task was `last`.
+
+---
+
+## 🟢 **Key Initialization**
+
+```java
+prev[0] = max(arr[0][1], arr[0][2])  // if previous was task 0, you cannot do task 0 again on day 0
+prev[1] = max(arr[0][0], arr[0][2])
+prev[2] = max(arr[0][0], arr[0][1])
+prev[3] = max(arr[0][0], arr[0][1], arr[0][2])  // no task restriction on first day
+```
+
+This sets up the best values for **day 0** depending on which previous task you had chosen.
+
+---
+
+## 🟢 **DP Transition**
+
+For every day from 1 to n-1:
+
+```java
+for (last = 0..3)
+    for (task = 0..2)
+        if (task != last)
+            temp[last] = max(temp[last], arr[day][task] + prev[task])
+```
+
+👉 Means:
+
+* for each possible “previous” task (`last`)
+* try each possible current `task` that is *different* from `last`
+* add its points to the best from the previous day
+* keep track of the maximum
+
+After finishing the day, set:
+
+```java
+prev = temp;
+```
+
+→ This rolls forward the dp table day by day, with only O(4) space.
+
+---
+
+# 🟢 **Final Answer**
+
+`prev[3]` holds the answer:
+
+* means: *best points achievable* with no restriction on previous-day’s task on the last day
+
+---
+
+# 🟢 **Summary of features**
+
+✅ **Time Complexity**: O(n \* 4 \* 3) = O(12n) \~ O(n)
+✅ **Space Complexity**: O(4)
+✅ Uses a rolling 1D array to reduce memory
+✅ Follows the classic *tabulation* bottom-up pattern:
+
+* initialize base
+* build the answer iteratively
+* return at the end
+
+---
+
+
+
+
 ## ⭐ **Tips to Remember for Similar DP Problems**
 
 * Always clearly define:
