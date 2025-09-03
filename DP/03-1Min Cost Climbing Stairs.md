@@ -150,6 +150,48 @@ dp[i] = min(
 )
 ```
 
+
+---
+
+### 📌 Problem Goal:
+Reach the "top floor", which is **just after the last stair** (i.e., `dp[10]`), and we can start from step 0 or step 1. So:
+
+- `dp[0] = 0`
+- `dp[1] = 0`
+
+---
+
+### 🧠 Initialize:
+```
+cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+n = cost.length = 10
+dp size = n + 1 = 11 (to include the top)
+```
+
+---
+
+### 🔄 Step-by-step table:
+
+| `i` | `dp[i]` computation | Value | Explanation |
+|----|----------------------|-------|-------------|
+| 2  | min(dp[1]+cost[1], dp[0]+cost[0]) | min(0+100, 0+1) = 1 | Step 2 from step 0 is cheaper |
+| 3  | min(dp[2]+cost[2], dp[1]+cost[1]) | min(1+1, 0+100) = 2 | Step 3 from step 2 is cheaper |
+| 4  | min(dp[3]+cost[3], dp[2]+cost[2]) | min(2+1, 1+1) = 2 | Step 4 from step 2 is better |
+| 5  | min(dp[4]+cost[4], dp[3]+cost[3]) | min(2+1, 2+1) = 3 | Both are equal, choose any |
+| 6  | min(dp[5]+cost[5], dp[4]+cost[4]) | min(3+100, 2+1) = 3 | Step 6 from step 4 is better |
+| 7  | min(dp[6]+cost[6], dp[5]+cost[5]) | min(3+1, 3+100) = 4 | Step 7 from step 6 |
+| 8  | min(dp[7]+cost[7], dp[6]+cost[6]) | min(4+1, 3+1) = 4 | Step 8 from step 6 is cheaper |
+| 9  | min(dp[8]+cost[8], dp[7]+cost[7]) | min(4+100, 4+1) = 5 | Step 9 from step 7 |
+|10  | min(dp[9]+cost[9], dp[8]+cost[8]) | min(5+1, 4+100) = 6 | Step 10 from step 9 |
+
+---
+
+### ✅ Final Result:
+
+`dp[10] = 6` → **Minimum cost to reach the top**
+
+---
+
 ---
 
 ### ✅ Final Summary
