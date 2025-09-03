@@ -1,3 +1,4 @@
+---
 # [Leetcode-70: Climbing Stairs Leetcode](https://leetcode.com/problems/climbing-stairs/)
 
 ---
@@ -38,14 +39,7 @@ In how many distinct ways can you climb to the top?
 
 ---
 
-## Solution Approaches
-
-We can solve this problem using **Dynamic Programming (DP)**.  
-Let’s explore step by step:
-
----
-
-### 1. Simple Recursion
+## ✅ Approach 1: Simple Recursion
 
 We try to climb from step `n` by breaking it into smaller subproblems:
 
@@ -64,19 +58,20 @@ class Solution {
 }
 ````
 
-**Explanation**:
+🔎 **Explanation**:
 
 * If `n == 1`, only 1 way.
 * If `n == 2`, two ways: (1+1) or (2).
 * Otherwise, recursively compute by breaking into smaller steps.
 
-⚠️ Time Complexity: **O(2^n)** → Exponential (causes TLE for large `n`).
+⚠️ **Time Complexity**: O(2^n) (exponential)
+⚠️ **Space Complexity**: O(n) (recursion stack)
 
 ---
 
-### 2. Recursion + Memoization (Top-Down DP)
+## ✅ Approach 2: Recursion + Memoization (Top-Down DP)
 
-We store results of already computed subproblems in a `dp[]` array to avoid recomputation.
+We use recursion but store results of already computed subproblems in a `dp[]` array.
 
 ```java
 class Solution {
@@ -95,19 +90,20 @@ class Solution {
 }
 ```
 
-**Explanation**:
+🔎 **Explanation**:
 
-* Uses recursion but caches intermediate results.
-* Ensures each state is computed only once.
+* Base cases remain the same.
+* Cache intermediate results in `dp[]`.
+* Prevents recalculating overlapping subproblems.
 
-⏱ Time Complexity: **O(n)**
-📦 Space Complexity: **O(n)** (recursion + dp array).
+⏱ **Time Complexity**: O(n)
+📦 **Space Complexity**: O(n) (recursion + dp array)
 
 ---
 
-### 3. Tabulation (Bottom-Up DP)
+## ✅ Approach 3: Tabulation (Bottom-Up DP)
 
-We iteratively build the solution from `1` to `n`.
+We iteratively build the solution from step `1` to `n`.
 
 ```java
 class Solution {
@@ -127,19 +123,19 @@ class Solution {
 }
 ```
 
-**Explanation**:
+🔎 **Explanation**:
 
-* Build bottom-up from `dp[1]` and `dp[2]`.
-* At each step, ways = sum of the two previous steps.
+* Start with known base cases.
+* Build answers iteratively for each step until `n`.
 
-⏱ Time Complexity: **O(n)**
-📦 Space Complexity: **O(n)**
+⏱ **Time Complexity**: O(n)
+📦 **Space Complexity**: O(n)
 
 ---
 
-### 4. Tabulation + Space Optimization
+## ✅ Approach 4: Tabulation + Space Optimization
 
-Since we only need the last two states at any time, we reduce space to **O(1)**.
+We notice that only the last two values are needed, so we reduce space to **O(1)**.
 
 ```java
 class Solution {
@@ -161,27 +157,30 @@ class Solution {
 }
 ```
 
-**Explanation**:
+🔎 **Explanation**:
 
-* Maintain only last two values instead of an entire array.
-* Efficient and clean.
+* Maintain only two variables (`prev1` and `prev2`).
+* Update them as we climb steps iteratively.
 
-⏱ Time Complexity: **O(n)**
-📦 Space Complexity: **O(1)**
+⏱ **Time Complexity**: O(n)
+📦 **Space Complexity**: O(1)
 
 ---
 
 ## 🔑 Summary of Approaches
 
-| Approach                   | Time Complexity | Space Complexity |
-| -------------------------- | --------------- | ---------------- |
-| Simple Recursion           | O(2^n)          | O(n) recursion   |
-| Recursion + Memoization    | O(n)            | O(n)             |
-| Tabulation (DP Array)      | O(n)            | O(n)             |
-| Space Optimized Tabulation | O(n)            | O(1)             |
+| Approach                         | Time Complexity | Space Complexity |
+| -------------------------------- | --------------- | ---------------- |
+| ✅ Approach 1: Simple Recursion   | O(2^n)          | O(n) recursion   |
+| ✅ Approach 2: Recursion + Memo   | O(n)            | O(n)             |
+| ✅ Approach 3: Tabulation         | O(n)            | O(n)             |
+| ✅ Approach 4: Space Optimization | O(n)            | O(1)             |
 
 ---
 
-✅ The most optimal approach is **Tabulation with Space Optimization**.
+👉 The **most optimal approach** is **Approach 4: Tabulation with Space Optimization**.
 
----
+```
+
+Do you also want me to **add a dry run for n = 5** in this `.md` so that the flow of each approach is crystal clear?
+```
