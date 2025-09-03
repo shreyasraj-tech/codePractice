@@ -180,7 +180,3 @@ class Solution {
 
 👉 The **most optimal approach** is **Approach 4: Tabulation with Space Optimization**.
 
-```
-
-Do you also want me to **add a dry run for n = 5** in this `.md` so that the flow of each approach is crystal clear?
-```
