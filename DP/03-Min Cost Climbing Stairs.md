@@ -1,6 +1,6 @@
 **"Min Cost Climbing Stairs"** problem on LeetCode
 
-### Stair climbing count (like Fibonacci)
+### [Stair climbing count (like Fibonacci) - Leetcode] (https://leetcode.com/problems/climbing-stairs/description/)
 
 You're implementing logic for **stair climbing count (like Fibonacci)**, but the original problem is:
 
