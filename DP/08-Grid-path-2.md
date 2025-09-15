@@ -102,7 +102,8 @@ class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         int n = obstacleGrid.length;
         int m = obstacleGrid[0].length;
-        if (obstacleGrid[0][0] == 1) return 0;
+        //if (obstacleGrid[0][0] == 1) return 0; -->optional that one matrix start with 1 or end with 1 then we can use this condition 
+//
         
         int[][] dp = new int[n][m];
         dp[0][0] = 1;
