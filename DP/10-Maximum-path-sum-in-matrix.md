@@ -82,7 +82,8 @@ $$
 
 ---
 
-### 🔎 Example Dry Run
+
+###  **Maximum Path Sum in Matrix visualization**
 
 Matrix:
 
@@ -97,39 +98,89 @@ mat = [
 
 ---
 
-**Step 1: Base (row 0)**
+### Step 1: Base case (last row = same as matrix last row)
 
 ```
-dp[0] = [10, 10, 2, 0, 20, 4]
-```
-
----
-
-**Step 2: Fill row 1**
-
-```
-dp[1] = [11, 10, 10, 50, 22, 25]
+dp[3] = [1, 0, 2, 20, 0, 4]
 ```
 
 ---
 
-**Step 3: Fill row 2**
+### Step 2: Fill row 2 (using dp\[3])
+
+Formula:
+
+$$
+dp[2][j] = mat[2][j] + \max(dp[3][j-1],\ dp[3][j],\ dp[3][j+1])
+$$
+
+* `dp[2][0] = 0 + max(1, 0) = 1`
+* `dp[2][1] = 10 + max(1, 0, 2) = 10 + 2 = 12`
+* `dp[2][2] = 4 + max(0, 2, 20) = 4 + 20 = 24`
+* `dp[2][3] = 0 + max(2, 20, 0) = 20`
+* `dp[2][4] = 2 + max(20, 0, 4) = 2 + 20 = 22`
+* `dp[2][5] = 0 + max(0, 4) = 4`
+
+✅ Row 2 becomes:
 
 ```
-dp[2] = [10, 60, 54, 50, 52, 25]
+dp[2] = [1, 12, 24, 20, 22, 4]
 ```
 
 ---
 
-**Step 4: Fill row 3**
+### Step 3: Fill row 1 (using dp\[2])
+
+* `dp[1][0] = 1 + max(1, 12) = 13`
+* `dp[1][1] = 0 + max(1, 12, 24) = 24`
+* `dp[1][2] = 0 + max(12, 24, 20) = 24`
+* `dp[1][3] = 30 + max(24, 20, 22) = 30 + 24 = 54`
+* `dp[1][4] = 2 + max(20, 22, 4) = 2 + 22 = 24`
+* `dp[1][5] = 5 + max(22, 4) = 5 + 22 = 27`
+
+✅ Row 1 becomes:
 
 ```
-dp[3] = [61, 62, 62, 74, 54, 56]
+dp[1] = [13, 24, 24, 54, 24, 27]
 ```
 
 ---
 
-**Final Answer = max(dp\[last row]) = 74**
+### Step 4: Fill row 0 (using dp\[1])
+
+* `dp[0][0] = 10 + max(13, 24) = 34`
+* `dp[0][1] = 10 + max(13, 24, 24) = 34`
+* `dp[0][2] = 2 + max(24, 24, 54) = 56`
+* `dp[0][3] = 0 + max(24, 54, 24) = 54`
+* `dp[0][4] = 20 + max(54, 24, 27) = 74`
+* `dp[0][5] = 4 + max(24, 27) = 31`
+
+✅ Row 0 becomes:
+
+```
+dp[0] = [34, 34, 56, 54, 74, 31]
+```
+
+---
+
+### Final Answer
+
+Take max from top row:
+
+$$
+\text{Max Path Sum} = 74
+$$
+
+---
+
+### Full DP Table (Bottom → Top)
+
+```
+Row 0 (top)    : [34, 34, 56, 54, 74, 31]
+Row 1          : [13, 24, 24, 54, 24, 27]
+Row 2          : [ 1, 12, 24, 20, 22,  4]
+Row 3 (bottom) : [ 1,  0,  2, 20,  0,  4]
+```
 
 ---
 
