@@ -157,36 +157,36 @@ Handles all cases automatically:
 * Large numbers
 * Stops fast
 
+  
+## The ONE rule you must remember
+
+> **Always keep the smaller value in `b`.
+> Always replace `b` with the remainder.**
+
+That’s it.
+
 ---
 
-## 6️⃣ Why the Best Method Works (Euclidean Algorithm)
+## Why this rule exists (very important intuition)
 
-### 🔑 Mathematical Truth
+* The **remainder is always smaller than `b`**
+* We want numbers to **shrink**
+* So:
 
-If:
+  * `b` ← remainder (smaller)
+  * `a` ← old `b`
 
-```
-a = x * m
-b = x * n
-```
+---
 
-Then:
+## Fixed 3-step pattern (never change this order)
 
-```
-a % b = x * (m - n * k)
-```
-
-So any number dividing both `a` and `b` also divides `a % b`.
-
-➡️ GCD is **preserved**, numbers keep shrinking.
-
-When `b == 0`:
-
-```
-gcd(a, 0) = a
+```java
+rem = a % b;   // 1️⃣ compute remainder
+a   = b;       // 2️⃣ move b into a
+b   = rem;     // 3️⃣ put remainder into b
 ```
 
-That `a` is the answer.
+📌 **This order is NOT negotiable**
 
 ---
 
@@ -372,6 +372,37 @@ The **last length that fits perfectly**
 
 > **GCD is the last non-zero remainder when repeatedly dividing**
 
+
+## 6️⃣ Why the Best Method Works (Euclidean Algorithm)
+
+### 🔑 Mathematical Truth
+
+If:
+
+```
+a = x * m
+b = x * n
+```
+
+Then:
+
+```
+a % b = x * (m - n * k)
+```
+
+So any number dividing both `a` and `b` also divides `a % b`.
+
+➡️ GCD is **preserved**, numbers keep shrinking.
+
+When `b == 0`:
+
+```
+gcd(a, 0) = a
+```
+
+That `a` is the answer.
+
+---
 
 
 
