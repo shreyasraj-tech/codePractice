@@ -84,65 +84,157 @@ Now new zeroes appear, causing **incorrect cascading updates**.
 
 ---
 
-### 🔹 Method 1: Extra Space (Row & Column Arrays)
-
-#### Logic
-
-* Create two arrays:
-
-  * `row[m]`
-  * `col[n]`
-* First pass → record which rows & columns have zero
-* Second pass → update matrix
-```java
-class Solution {
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-
-        boolean[] row = new boolean[m];
-        boolean[] col = new boolean[n];
-
-        // Step 1: Mark rows and columns
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    row[i] = true;
-                    col[j] = true;
-                }
-            }
-        }
-
-        // Step 2: Update matrix
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (row[i] || col[j]) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-    }
-}
-
-```
 
 
-#### Pros
+### ❓ Why This Works
 
-* Easy to understand
-
-#### Cons
-
-* Uses extra space
+* We **never modify** the matrix until we have **complete information**
+* The original zero positions are preserved
+* No accidental cascading of zeroes
 
 ---
 
-### 🔹 Method 2: Using Temporary Marker Value (Conceptual / Not Recommended)
+### ⚠️ Limitation of This Approach
 
-#### Logic
+* Uses extra space:
 
-* Store row indices and column indices containing zero
-* In second pass, zero them out
+  * `O(m + n)`
+* Not optimal when the problem explicitly demands **O(1)** space
+
+This limitation leads to **Method 3**, where we reuse the matrix itself as memory.
+
+---
+
+### 🧠 Mental Model to Remember
+
+> “**Detect first, modify later. Store decisions separately.**”
+
+Once you understand this, the transition to the optimal in-place solution becomes natural.
+
+
+---
+
+### ✅ Method 2: Using Temporary Marker Value (Conceptual / Not Recommended)
+
+> This method is **not recommended for interviews**, but it is extremely useful to understand **why naive in-place updates fail** and **how data corruption happens**.
+
+---
+
+## 🔍 Core Idea
+
+When you find a `0` at position `(i, j)`:
+
+* The entire **row `i`**
+* The entire **column `j`**
+
+must become `0`.
+
+The problem is:
+
+> If you immediately change them to `0`, you may create **new zeroes** that were **not originally present**, which breaks correctness.
+
+### So the workaround is:
+
+* Do **in-place marking**, but
+* Use a **temporary value** (like `-1`) instead of `0`.
+
+This helps distinguish:
+
+* **Original zeroes**
+* **Zeroes that are supposed to be set later**
+
+---
+
+## 🧠 Why a Temporary Marker is Needed
+
+Consider:
+
+```
+1  1  1
+1  0  1
+1  1  1
+```
+
+If you update immediately:
+
+```
+1  0  1
+0  0  0
+1  0  1
+```
+
+Now the newly created `0`s will trigger **additional row/column zeroing**, which is wrong.
+
+### Solution:
+
+Use a marker value (`-1`) to say:
+
+> “This cell must be zero later, but it was NOT originally zero.”
+
+---
+
+## 🧩 Step-by-Step Logic
+
+### Step 1: Traverse the Matrix
+
+* When `matrix[i][j] == 0`:
+
+  * Traverse the entire **row `i`**
+
+    * Change non-zero values to `-1`
+  * Traverse the entire **column `j`**
+
+    * Change non-zero values to `-1`
+
+🚫 Do **not** touch existing zeroes.
+
+---
+
+### Step 2: Final Cleanup
+
+* Traverse the matrix again
+* Convert all `-1` → `0`
+
+---
+
+## 🧪 Example Walkthrough
+
+### Input
+
+```
+1  1  1
+1  0  1
+1  1  1
+```
+
+### After Marking Phase
+
+```
+1  -1  1
+-1  0  -1
+1  -1  1
+```
+
+### After Cleanup Phase
+
+```
+1  0  1
+0  0  0
+1  0  1
+```
+
+✔️ Correct result **in this case**.
+
+---
+
+## ❌ Why This Method Is Dangerous
+
+### 1️⃣ Data Assumption Problem
+
+* Assumes `-1` does **not** exist in input
+* Real problems do not guarantee this
+
+
 ```java
 class Solution {
     public void setZeroes(int[][] matrix) {
@@ -183,40 +275,210 @@ class Solution {
 
 ```
 
+### ⚠️ Method 2: Using a Temporary Marker Value (Conceptual Approach)
 
-#### Drawback
 
-* Space complexity is not optimal
+
+### 2️⃣ Poor Time Complexity
+
+* Every `0` triggers full row + column scan
+* Worst case:
+  **O(m × n × (m + n))**
+
+---
+
+### 3️⃣ Conceptually Weak
+
+* Relies on magic values
+* Breaks abstraction
+* Not scalable or safe
+
+---
+
+## 🧠 What This Method Teaches You
+
+Even though it’s flawed, it teaches **critical lessons**:
+
+* ❌ Immediate in-place updates cause corruption
+* ✅ You must preserve original state
+* ⚠️ Temporary markers are risky
+* 🎯 Leads naturally to:
+
+  * Extra space solution (Method 1)
+  * In-place marker optimization (Method 3)
+
+---
+
+## 🧠 Interview Perspective
+
+| Aspect               | Verdict        |
+| -------------------- | -------------- |
+| Correctness          | ⚠️ Conditional |
+| Safety               | ❌              |
+| Efficiency           | ❌              |
+| Interview Acceptance | ❌              |
+
+👉 Use this method **only for understanding**, never as final solution.
+
+---
+
+## 🧠 Mental One-Liner
+
+> “Temporary markers delay corruption, but assumptions kill correctness.”
+
 
 ---
 
 ### 🔹 Method 3: **Optimal In-Place Solution (Best Method)**
 
-#### Core Idea
+Below is a **logic-first explanation of Method 3 (Optimal In-Place)** followed by the **annotated Java code**.
+Read the logic first → the code will feel obvious.
 
-Use **first row and first column as markers**
+---
 
-#### Steps
+## 🧠 Method 3 — Logic + Code (Together)
 
-1. **Check if first row has zero**
-2. **Check if first column has zero**
-3. Traverse matrix (excluding first row & column):
+---
 
-   * If `matrix[i][j] == 0`
+## 🎯 What We Want
 
-     * Mark → `matrix[i][0] = 0`
-     * Mark → `matrix[0][j] = 0`
-4. Traverse again:
+* Set an entire **row** and **column** to `0` if any element is `0`
+* Do it **in-place**
+* Use **O(1)** extra space
 
-   * If row marker or column marker is `0`, set cell to `0`
-5. Finally handle:
+---
 
-   * First row
-   * First column
+## 💡 Core Observation
+
+We only need to remember:
+
+* **Which rows** contain a zero
+* **Which columns** contain a zero
+
+Instead of extra arrays, we reuse:
+
+* **First row** → column markers
+* **First column** → row markers
+
+⚠️ But before reusing them, we must **save their original state**.
+
+---
+
+## 🔐 Step 1 & 2 — Protect First Row and First Column
+
+If we overwrite them without checking, we lose information.
+
+```java
+boolean firstRowZero = false;
+boolean firstColZero = false;
+
+// Check first row
+for (int j = 0; j < matrix[0].length; j++) {
+    if (matrix[0][j] == 0) {
+        firstRowZero = true;
+        break;
+    }
+}
+
+// Check first column
+for (int i = 0; i < matrix.length; i++) {
+    if (matrix[i][0] == 0) {
+        firstColZero = true;
+        break;
+    }
+}
+```
+
+🧠 **Logic**
+
+* These flags remember whether the first row or column must be zeroed **at the end**.
+
+---
+
+## 🧠 Step 3 — Use First Row & Column as Markers
+
+Now we safely record decisions.
+
+```java
+for (int i = 1; i < matrix.length; i++) {
+    for (int j = 1; j < matrix[0].length; j++) {
+        if (matrix[i][j] == 0) {
+            matrix[i][0] = 0; // mark row
+            matrix[0][j] = 0; // mark column
+        }
+    }
+}
+```
+
+🧠 **Logic**
+
+* We **do not zero anything yet**
+* We only say:
+
+  * “Row `i` needs to be zero”
+  * “Column `j` needs to be zero”
+
+---
+
+## 🧠 Step 4 — Apply Markers to Inner Matrix
+
+Now all decisions are known.
+
+```java
+for (int i = 1; i < matrix.length; i++) {
+    for (int j = 1; j < matrix[0].length; j++) {
+        if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+            matrix[i][j] = 0;
+        }
+    }
+}
+```
+
+🧠 **Logic**
+
+* If row OR column is marked → cell must be zero
+* Safe because markers are stable
+
+---
+
+## 🧠 Step 5 — Handle First Row Last
+
+```java
+if (firstRowZero) {
+    for (int j = 0; j < matrix[0].length; j++) {
+        matrix[0][j] = 0;
+    }
+}
+```
+
+🧠 **Logic**
+
+* We delayed this so column markers weren’t destroyed early
+
+---
+
+## 🧠 Step 6 — Handle First Column Last
+
+```java
+if (firstColZero) {
+    for (int i = 0; i < matrix.length; i++) {
+        matrix[i][0] = 0;
+    }
+}
+```
+
+🧠 **Logic**
+
+* Same reasoning as first row
+
+---
+
+## ✅ Complete Java Code (Method 3)
 
 ```java
 class Solution {
     public void setZeroes(int[][] matrix) {
+
         int m = matrix.length;
         int n = matrix[0].length;
 
@@ -239,7 +501,7 @@ class Solution {
             }
         }
 
-        // Step 3: Use first row & column as markers
+        // Step 3: Mark rows and columns
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {
                 if (matrix[i][j] == 0) {
@@ -249,7 +511,7 @@ class Solution {
             }
         }
 
-        // Step 4: Set zeroes based on markers
+        // Step 4: Apply zeroes using markers
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {
                 if (matrix[i][0] == 0 || matrix[0][j] == 0) {
@@ -258,14 +520,14 @@ class Solution {
             }
         }
 
-        // Step 5: Handle first row
+        // Step 5: Zero first row if needed
         if (firstRowZero) {
             for (int j = 0; j < n; j++) {
                 matrix[0][j] = 0;
             }
         }
 
-        // Step 6: Handle first column
+        // Step 6: Zero first column if needed
         if (firstColZero) {
             for (int i = 0; i < m; i++) {
                 matrix[i][0] = 0;
@@ -273,23 +535,13 @@ class Solution {
         }
     }
 }
-
-
 ```
-#### Why This Works
-
-* Uses matrix itself as memory
-* No information loss
-* Order of operations prevents corruption
 
 ---
 
-## 6. Why the Best Method Works
+## 🧠 One-Line Memory Hook
 
-✅ Uses **matrix as its own marker**
-✅ Avoids extra space
-✅ No cascading errors
-✅ Clean, deterministic update order
+> **“Save the truth, mark intent, apply decisions, fix boundaries.”**
 
 🎯 **Key Insight**
 
